@@ -1,0 +1,15 @@
+{
+  "name": "dev-tinder-backend",
+  "version": "1.0.0",
+  "description": "tinder for dev",
+  "license": "ISC",
+  "author": "Akash Das",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
