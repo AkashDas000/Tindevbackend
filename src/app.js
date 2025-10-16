@@ -2,28 +2,20 @@ const express = require("express");
 
 const app = express();
 
-const { adminAuth } = require("./middleware/auth")
-
-// app.use("/admin", adminAuth)
-
-app.get("/admin/getData", adminAuth, (req, res) => {
-    res.send("Get user data")
-})
-
-app.get("/admin/allUserData", adminAuth, (req, res) => {
-    res.send("Get all user data")
-})
-
-app.get("/user", (req, res, next) => {
-  console.log("Handling the route user");
-  // res.send("Respons !")
-  next();
+app.get("/userData", (req, res) => {
+    // best practice use try and catch
+  try {
+    throw new Error("anfajfnnma");
+    res.send("Get user data");
+  } catch(err) {
+    res.status(404).send("Error 404! Contact Support Team")
+  }
 });
 
-app.get("/user", (req, res, next) => {
-  console.log("Handling the route user 2");
-  res.send("Respons 2 !")
-//   next();
+app.use("/", (err, req, res, next) => {
+  if (err) {
+    res.send("Somethind went wrong");
+  }
 });
 
 app.listen(7777, () => {
