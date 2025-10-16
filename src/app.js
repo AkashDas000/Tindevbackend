@@ -1,29 +1,31 @@
-const express = require("express")
+const express = require("express");
 
-const app = express()
+const app = express();
 
+const { adminAuth } = require("./middleware/auth")
 
-app.get("/", (req, res) => {
-    res.send("Namste AKash")
+// app.use("/admin", adminAuth)
+
+app.get("/admin/getData", adminAuth, (req, res) => {
+    res.send("Get user data")
 })
 
-app.get("/user/:userId", (req, res) => {
-    console.log(req.params)
-    res.send({firstName: "Akash", lastName: "Das"})
+app.get("/admin/allUserData", adminAuth, (req, res) => {
+    res.send("Get all user data")
 })
 
-app.get("/abc", (req, res) => {
-    res.send({firstName: "Akash", lastName: "Das"})
-})
+app.get("/user", (req, res, next) => {
+  console.log("Handling the route user");
+  // res.send("Respons !")
+  next();
+});
 
-app.post("/user", (req, res) => {
-    res.send("Data successfully saved in the database")
-})
+app.get("/user", (req, res, next) => {
+  console.log("Handling the route user 2");
+  res.send("Respons 2 !")
+//   next();
+});
 
-// app.get("/hello", (req, res) => {
-//     res.send("Hello hello hola")
-// })
-
-app.listen(7777, ()=>{
-    console.log("Server is Successfully running..... ")
-})
+app.listen(7777, () => {
+  console.log("Server is Successfully running..... ");
+});
