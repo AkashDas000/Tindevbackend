@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 
 const userSchema = mongoose.Schema(
   {
@@ -45,6 +45,19 @@ const userSchema = mongoose.Schema(
           throw new Error("Gender data is not valid");
         }
       },
+    },
+    photoURL: {
+      type: String,
+      validate(value) {
+        return validator.isURL(value, {
+          protocols: ["http", "https"],
+          require_protocol: true,
+        });
+      },
+      message: "Invalid photo URL! Must include http or https.",
+    },
+    about: {
+      type: String,
     },
     skills: {
       type: [String],
