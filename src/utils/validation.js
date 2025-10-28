@@ -30,7 +30,23 @@ const validateEditProfileData = (req) => {
   return isEditAllowed;
 };
 
+
+const validatePassword = (req) => {
+  const {oldPassword, newPassword} = req.body
+
+  if(!oldPassword || !newPassword){
+    throw new Error("Both old and new passwords are required")
+  }
+
+  if(!validator.isStrongPassword(newPassword)){
+    throw new Error("New password is not strong enough")
+  }
+}
+
+
+
 module.exports = {
   validateSignupData,
   validateEditProfileData,
+  validatePassword,
 };
