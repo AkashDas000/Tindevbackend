@@ -1,14 +1,15 @@
-const { default: mongoose } = require('mongoose')
-const moongose = require('mongoose')
+// const { default: mongoose } = require('mongoose')
+const mongoose = require('mongoose')
 
 const connectionRequestSchema = new mongoose.Schema({
-
     formUserId: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: "User", //refernce to the user collection
         required: true,
     },
     toUserId: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true,
     },
     status:{
