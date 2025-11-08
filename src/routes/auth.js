@@ -21,6 +21,7 @@ authRouter.post("/signup", async (req, res) => {
       lastName,
       emailId,
       age,
+      photoURL,
       password: passwordHash,
     });
 
@@ -48,7 +49,7 @@ authRouter.post("/login", async (req, res) => {
 
       //Add the token to cookie and send the response back to the user
       res.cookie("token", token);
-      res.send("Login Succesfully !");
+      res.send(user);
     } else {
       throw new Error("Invalid password");
     }
