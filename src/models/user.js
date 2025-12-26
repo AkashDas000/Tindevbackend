@@ -47,14 +47,13 @@ const userSchema = mongoose.Schema(
       },
     },
     photoURL: {
-      type: String,
+       type: String,
+      default: "https://geographyandyou.com/images/user-profile.png",
       validate(value) {
-        return validator.isURL(value, {
-          protocols: ["http", "https"],
-          require_protocol: true,
-        });
+        if (!validator.isURL(value)) {
+          throw new Error("Invalid Photo URL: " + value);
+        }
       },
-      message: "Invalid photo URL! Must include http or https.",
     },
     about: {
       type: String,

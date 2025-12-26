@@ -4,7 +4,7 @@ const { userAuth } = require("../middleware/auth");
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
 
-const USER_SAFE_DATA = "firstName lastName photo age skills about";
+const USER_SAFE_DATA = "firstName lastName photoURL gender age skills about";
 
 // Get all the pending connection request for the loggedIn user
 userRouter.get("/user/request/received", userAuth, async (req, res) => {
@@ -49,12 +49,6 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
 
 userRouter.get("/user/feed", userAuth, async (req, res) => {
   try {
-    //user see all the user card except
-    //1. his own card
-    //2.his connections
-    //3.ignored people
-    //4.already sent the connection request
-
     const loggedInUser = req.user;
 
     const page = parseInt(req.query.page) || 1;

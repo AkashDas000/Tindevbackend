@@ -1,16 +1,15 @@
-const express = require("express")
+const express = require("express");
 const { validateSignupData } = require("../utils/validation");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const authRouter = express.Router();
-
 
 authRouter.post("/signup", async (req, res) => {
   try {
     //Validate of data
     validateSignupData(req);
 
-    const { firstName, lastName, emailId, password, age  } = req.body;
+    const { firstName, lastName, emailId, password, age, photoURL } = req.body;
     //Encrypt password
     const passwordHash = await bcrypt.hash(password, 10);
     // console.log(passwordHash);
@@ -25,8 +24,13 @@ authRouter.post("/signup", async (req, res) => {
       password: passwordHash,
     });
 
-    await user.save(); // this will give a promise that's why we use await
-    res.send("User added Successfully...");
+    const savedUser = await user.save(); // this will give a promise that's why we use await
+
+    const token = await savedUser.getJWT();
+    //Add the token to cookie and send the response back to the user
+    res.cookie("token", token);
+
+    res.json({ message: "User added Successfully...", data: savedUser });
   } catch (err) {
     res.status(400).send("ERROR : " + err.message);
   }
@@ -41,11 +45,10 @@ authRouter.post("/login", async (req, res) => {
       throw new Error("Invalid Email");
     }
 
-
     const passwordValid = await user.validatePassword(password);
     if (passwordValid) {
       //Create JWT Token
-      const token = await user.getJWT()
+      const token = await user.getJWT();
 
       //Add the token to cookie and send the response back to the user
       res.cookie("token", token);
@@ -59,11 +62,11 @@ authRouter.post("/login", async (req, res) => {
 });
 
 authRouter.post("/logout", async (req, res) => {
-    res.cookie("token", null, {
-        expires: new Date(Date.now())
-    })
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+  });
 
-    res.send("Logout Successfully....")
-})
+  res.send("Logout Successfully....");
+});
 
-module.exports = authRouter;    
+module.exports = authRouter;
